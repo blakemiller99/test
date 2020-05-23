@@ -1,0 +1,22 @@
+<?php
+add_shortcode("authorbox","authorbox_handle");
+function authorbox_handle() {
+    $user = get_field("user_field");
+    $result = '';
+    if ($user) {
+        // Name fallbacks
+        $user_name = $user['display_name'];
+        if (empty($user['display_name'])) {
+            $user_name = $user['first_name'];
+            if (empty($user_name)) { $user_name = $user['user_login']; }
+        }
+ 
+        $result = '<div class="author-box">
+<img src="' . esc_attr($user['user_avatar']) . '" alt="author-avatar" />
+<h3>' . $user_name . '</h3>' . "\n";
+        if( !empty(trim($user['user_description'])) ) { $result .= '<p>' . $user['user_description'] . '</p>' . "\n"; }
+        $result .= '</div>' . "\n";
+    }
+    return $result;
+}
+?>
